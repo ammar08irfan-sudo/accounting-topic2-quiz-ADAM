@@ -1,116 +1,898 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
+<html lang="en">
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Cost Factory: Topic 2 Cost Accounting Game</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#eef1f4;--card:#fff;--ink:#14202b;--mute:#5b6b79;--line:#cfd7de;--steel:#2f5d7c;--amber:#f2a900;--ok:#1e8e5a;--okbg:#dff3e8;--bad:#c8412f;--badbg:#fae3df;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101820;--card:#1a2631;--ink:#eaf0f5;--mute:#9db0bf;--line:#33454f;--steel:#6fa8cf;--okbg:#17382a;--badbg:#401e19;--ok:#4cc88a;--bad:#ff8a77}}
-:root[data-theme="dark"]{--bg:#101820;--card:#1a2631;--ink:#eaf0f5;--mute:#9db0bf;--line:#33454f;--steel:#6fa8cf;--okbg:#17382a;--badbg:#401e19;--ok:#4cc88a;--bad:#ff8a77}
-*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 Barlow,system-ui,sans-serif}
-#app{max-width:480px;margin:0 auto;padding:16px}
-h1,h2,.big{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;margin:0;letter-spacing:.2px}
-h1{font-size:44px;line-height:1}h2{font-size:28px}
-.sub{color:var(--mute);margin:8px 0 20px}
-.lv{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:10px;padding:14px;margin-bottom:10px;color:var(--ink);font:inherit;cursor:pointer}
-.lv:active{border-color:var(--steel)}
-.lv b{font-family:"Barlow Condensed",sans-serif;font-size:22px;display:block}
-.lv span.n{font-family:"Barlow Condensed",sans-serif;font-size:34px;color:var(--amber);min-width:30px}
-.lv small{color:var(--mute)}
-.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-weight:600}
-.prog{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:16px}
-.prog i{display:block;height:100%;background:var(--steel);transition:width .3s}
-.belt{background:var(--card);border:2px solid var(--line);border-bottom:8px solid var(--steel);border-radius:10px;padding:20px 16px;min-height:120px;font-size:20px;font-weight:500}
-.belt .amt{display:inline-block;margin-top:8px;font-family:"Barlow Condensed",sans-serif;font-size:26px;color:var(--steel)}
-.opts{display:grid;gap:10px;margin-top:16px}
-.o{background:var(--card);color:var(--ink);border:2px solid var(--line);border-radius:10px;padding:14px;font:inherit;font-weight:600;text-align:left;cursor:pointer}
-.o:focus-visible,.lv:focus-visible,.go:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
-.o.ok{background:var(--okbg);border-color:var(--ok)}.o.no{background:var(--badbg);border-color:var(--bad)}
-.fb{margin-top:14px;padding:12px 14px;border-radius:10px;font-size:15px}
-.fb.ok{background:var(--okbg)}.fb.no{background:var(--badbg)}
-.go{margin-top:14px;width:100%;background:var(--amber);color:#14202b;border:0;border-radius:10px;padding:14px;font:inherit;font-weight:700;font-size:17px;cursor:pointer}
-.big{font-size:64px;color:var(--amber);line-height:1}
-.ref{background:var(--card);border:2px solid var(--line);border-radius:10px;padding:12px;margin:12px 0;font-size:14px}
-.ref table{width:100%;border-collapse:collapse}.ref td{padding:2px 0}.ref td:last-child{text-align:right}
-.credit{margin-top:24px;padding:14px;background:var(--card);border:2px solid var(--line);border-left:5px solid var(--amber);border-radius:10px;font-size:13px;color:var(--mute);line-height:1.5}
-.credit strong{display:block;font-family:"Barlow Condensed",sans-serif;font-size:16px;letter-spacing:.5px;text-transform:uppercase;color:var(--steel);margin-bottom:4px}
-.credit span{display:block;color:var(--ink);font-weight:600}
-</style></head><body><div id="app"></div>
+:root {
+  --bg: #eef1f4;
+  --card: #ffffff;
+  --card-alt: #f6f8fa;
+  --ink: #14202b;
+  --mute: #5b6b79;
+  --line: #cfd7de;
+  --steel: #2f5d7c;
+  --steel-soft: rgba(47, 93, 124, 0.1);
+  --amber: #f2a900;
+  --amber-soft: rgba(242, 169, 0, 0.14);
+  --ok: #1e8e5a;
+  --okbg: #dff3e8;
+  --bad: #c8412f;
+  --badbg: #fae3df;
+  --shadow: 0 2px 8px rgba(20, 32, 43, 0.05);
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #101820;
+    --card: #1a2631;
+    --card-alt: #21303e;
+    --ink: #eaf0f5;
+    --mute: #9db0bf;
+    --line: #314454;
+    --steel: #6fa8cf;
+    --steel-soft: rgba(111, 168, 207, 0.14);
+    --amber-soft: rgba(242, 169, 0, 0.16);
+    --okbg: #17382a;
+    --badbg: #401e19;
+    --ok: #4cc88a;
+    --bad: #ff8a77;
+    --shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #101820;
+  --card: #1a2631;
+  --card-alt: #21303e;
+  --ink: #eaf0f5;
+  --mute: #9db0bf;
+  --line: #314454;
+  --steel: #6fa8cf;
+  --steel-soft: rgba(111, 168, 207, 0.14);
+  --amber-soft: rgba(242, 169, 0, 0.16);
+  --okbg: #17382a;
+  --badbg: #401e19;
+  --ok: #4cc88a;
+  --bad: #ff8a77;
+  --shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+* { box-sizing: border-box; }
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.5 "Barlow", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+#app {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 20px 16px 36px;
+}
+
+h1, h2, .big {
+  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.3px;
+}
+
+h1 { font-size: 46px; line-height: 0.98; }
+h2 { font-size: 30px; line-height: 1.1; }
+
+/* Animations */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes beltRollIn {
+  0% { opacity: 0; transform: translateX(36px) scale(0.98); }
+  70% { opacity: 1; transform: translateX(-4px) scale(1); }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes stripeMove {
+  from { background-position: 0 0; }
+  to { background-position: 32px 0; }
+}
+
+@keyframes popOk {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.025); }
+  100% { transform: scale(1); }
+}
+
+@keyframes shakeBad {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-7px); }
+  40% { transform: translateX(7px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+}
+
+@keyframes starPop {
+  0% { opacity: 0; transform: scale(0.5) translateY(8px); }
+  70% { transform: scale(1.12) translateY(-2px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes pulseStreak {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+.anim-enter {
+  animation: fadeSlideUp 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.top-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--steel);
+  background: var(--steel-soft);
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+
+.sub {
+  color: var(--mute);
+  margin: 10px 0 22px;
+  font-size: 15px;
+}
+
+.icon-btn {
+  background: var(--card);
+  color: var(--ink);
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  padding: 7px 11px;
+  font: 600 13px/1 "Barlow", sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: var(--shadow);
+  transition: border-color 0.15s, transform 0.12s, background-color 0.15s;
+}
+.icon-btn:hover { border-color: var(--steel); background: var(--card-alt); }
+.icon-btn:active { transform: scale(0.96); }
+.icon-btn.muted { opacity: 0.7; color: var(--mute); }
+
+/* Shift / Level Cards */
+.lv {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 15px 16px;
+  margin-bottom: 12px;
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  animation: fadeSlideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transition: transform 0.14s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.lv:nth-child(3) { animation-delay: 0.04s; }
+.lv:nth-child(4) { animation-delay: 0.08s; }
+.lv:nth-child(5) { animation-delay: 0.12s; }
+.lv:nth-child(6) { animation-delay: 0.16s; }
+
+.lv:hover {
+  border-color: var(--steel);
+  transform: translateY(-2px);
+}
+.lv:active { transform: scale(0.99); }
+
+.lv .n {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: var(--amber-soft);
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--amber);
+  transition: transform 0.2s ease;
+}
+.lv:hover .n { transform: scale(1.06); }
+
+.lv .lv-body { flex: 1; min-width: 0; }
+.lv b {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 22px;
+  line-height: 1.15;
+  display: block;
+}
+.lv small {
+  display: block;
+  color: var(--mute);
+  font-size: 13.5px;
+  margin-top: 2px;
+}
+.lv .stars {
+  margin-top: 6px;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: var(--amber);
+  font-weight: 700;
+}
+
+/* Gameplay HUD */
+.bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 14px;
+}
+.bar-meta { color: var(--mute); font-size: 13.5px; }
+.lives { color: var(--bad); letter-spacing: 2px; font-size: 16px; transition: transform 0.2s; }
+.streak-pill {
+  display: inline-block;
+  background: var(--amber-soft);
+  color: var(--amber);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-left: 6px;
+  animation: pulseStreak 0.4s ease;
+}
+
+.prog {
+  height: 8px;
+  background: var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.prog i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--steel), var(--amber));
+  border-radius: 999px;
+  transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Question Conveyor Belt */
+.belt {
+  position: relative;
+  overflow: hidden;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-bottom: 7px solid var(--steel);
+  border-radius: 12px;
+  padding: 20px 18px 22px;
+  min-height: 124px;
+  font-size: 19px;
+  font-weight: 500;
+  box-shadow: var(--shadow);
+  animation: beltRollIn 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.belt::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 5px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.35) 0 8px,
+    transparent 8px 16px
+  );
+  background-size: 32px 5px;
+  animation: stripeMove 1.4s linear infinite;
+}
+.belt b { font-weight: 700; }
+.belt .amt {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: var(--steel-soft);
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--steel);
+}
+
+/* Options */
+.opts {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+.o {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--card);
+  color: var(--ink);
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  padding: 13px 14px;
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  animation: fadeSlideUp 0.25s ease both;
+  transition: border-color 0.15s, background-color 0.15s, transform 0.12s;
+}
+.o:nth-child(2) { animation-delay: 0.03s; }
+.o:nth-child(3) { animation-delay: 0.06s; }
+.o:nth-child(4) { animation-delay: 0.09s; }
+
+.o:hover:not(:disabled) {
+  border-color: var(--steel);
+  background: var(--card-alt);
+  transform: translateX(2px);
+}
+.o:active:not(:disabled) { transform: scale(0.99); }
+.o:disabled { cursor: default; opacity: 0.88; }
+
+.o .key {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--mute);
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.o.ok {
+  background: var(--okbg);
+  border-color: var(--ok);
+  opacity: 1;
+  animation: popOk 0.32s ease;
+}
+.o.ok .key {
+  background: var(--ok);
+  border-color: var(--ok);
+  color: #fff;
+}
+
+.o.no {
+  background: var(--badbg);
+  border-color: var(--bad);
+  opacity: 1;
+  animation: shakeBad 0.36s ease;
+}
+.o.no .key {
+  background: var(--bad);
+  border-color: var(--bad);
+  color: #fff;
+}
+
+.o:focus-visible,
+.lv:focus-visible,
+.go:focus-visible,
+.icon-btn:focus-visible {
+  outline: 3px solid var(--amber);
+  outline-offset: 2px;
+}
+
+/* Feedback & Action Buttons */
+.fb {
+  margin-top: 14px;
+  padding: 13px 15px;
+  border-radius: 10px;
+  font-size: 14.5px;
+  line-height: 1.45;
+  border: 1px solid transparent;
+  animation: fadeSlideUp 0.24s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.fb.ok { background: var(--okbg); border-color: rgba(30, 142, 90, 0.25); }
+.fb.no { background: var(--badbg); border-color: rgba(200, 65, 47, 0.25); }
+
+.go {
+  margin-top: 12px;
+  width: 100%;
+  background: var(--amber);
+  color: #14202b;
+  border: 0;
+  border-radius: 10px;
+  padding: 14px 16px;
+  font: inherit;
+  font-weight: 700;
+  font-size: 16.5px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  animation: fadeSlideUp 0.26s ease both;
+  transition: filter 0.15s, transform 0.12s;
+}
+.go:hover { filter: brightness(1.05); transform: translateY(-1px); }
+.go:active { transform: scale(0.99); }
+
+/* End Screen */
+.result-card {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 18px;
+  margin-top: 10px;
+  box-shadow: var(--shadow);
+  animation: fadeSlideUp 0.3s ease both;
+}
+.big {
+  font-size: 56px;
+  color: var(--amber);
+  line-height: 1.05;
+  margin: 6px 0;
+  display: inline-block;
+  animation: starPop 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.stats-row {
+  display: flex;
+  gap: 10px;
+  margin: 14px 0 4px;
+}
+.stat-box {
+  flex: 1;
+  background: var(--card-alt);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.stat-box span { display: block; font-size: 12px; color: var(--mute); }
+.stat-box strong {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 24px;
+  color: var(--ink);
+}
+
+/* Reference Table for Boss Round */
+.ref {
+  background: var(--card-alt);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 14px 0 4px;
+  font-size: 14px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+.ref table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.ref tr { border-bottom: 1px dashed var(--line); }
+.ref tr:last-child { border-bottom: 0; }
+.ref td { padding: 6px 4px; }
+.ref td:last-child {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  white-space: nowrap;
+  padding-left: 12px;
+}
+
+/* Credit Card */
+.credit {
+  margin-top: 24px;
+  padding: 15px 16px;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-left: 5px solid var(--amber);
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--mute);
+  line-height: 1.55;
+  box-shadow: var(--shadow);
+  animation: fadeSlideUp 0.35s ease both;
+}
+.credit strong {
+  display: block;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--steel);
+  margin-bottom: 6px;
+}
+.credit .row { margin-top: 4px; }
+.credit span {
+  display: inline;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
 <script>
-const $=s=>document.querySelector(s);
-const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
-const fmt=n=>"RM"+n.toLocaleString("en-US");
-const C4=["Direct materials","Direct labour","Manufacturing overhead","Non-manufacturing cost"];
+const $ = s => document.querySelector(s);
+const sh = a => {
+  a = a.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+};
+const fmt = n => "RM" + n.toLocaleString("en-US");
+const C4 = ["Direct materials", "Direct labour", "Manufacturing overhead", "Non-manufacturing cost"];
+
+// Web Audio API Synthesizer (no external audio files needed)
+const SFX = (() => {
+  let ctx = null;
+  let muted = false;
+  try { muted = localStorage.getItem("cf-muted") === "1"; } catch (e) {}
+
+  function ensureCtx() {
+    if (muted) return null;
+    if (!ctx) {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) ctx = new AudioCtx();
+    }
+    if (ctx && ctx.state === "suspended") ctx.resume().catch(() => {});
+    return ctx;
+  }
+
+  function tone(freq, type, dur, vol = 0.12, delay = 0, endFreq = null) {
+    const c = ensureCtx();
+    if (!c) return;
+    const now = c.currentTime + delay;
+    const osc = c.createOscillator();
+    const gain = c.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, now);
+    if (endFreq) osc.frequency.exponentialRampToValueAtTime(endFreq, now + dur);
+
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.linearRampToValueAtTime(vol, now + 0.012);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+
+    osc.connect(gain);
+    gain.connect(c.destination);
+    osc.start(now);
+    osc.stop(now + dur + 0.02);
+  }
+
+  return {
+    isMuted: () => muted,
+    toggleMute: () => {
+      muted = !muted;
+      try { localStorage.setItem("cf-muted", muted ? "1" : "0"); } catch (e) {}
+      if (!muted) tone(660, "sine", 0.09, 0.09);
+      return muted;
+    },
+    click: () => tone(520, "triangle", 0.055, 0.07),
+    start: () => {
+      tone(392, "triangle", 0.09, 0.09, 0);
+      tone(523.25, "triangle", 0.11, 0.1, 0.075);
+      tone(659.25, "triangle", 0.14, 0.1, 0.15);
+    },
+    correct: (streak = 1) => {
+      const pitchBoost = Math.min(streak - 1, 5) * 35;
+      tone(587.33 + pitchBoost, "triangle", 0.11, 0.12, 0);
+      tone(880 + pitchBoost, "sine", 0.18, 0.12, 0.08);
+    },
+    wrong: () => {
+      tone(240, "sawtooth", 0.14, 0.09, 0, 175);
+      tone(165, "triangle", 0.18, 0.1, 0.11, 130);
+    },
+    win: () => {
+      tone(523.25, "triangle", 0.12, 0.11, 0);
+      tone(659.25, "triangle", 0.12, 0.11, 0.1);
+      tone(783.99, "triangle", 0.14, 0.12, 0.2);
+      tone(1046.5, "sine", 0.28, 0.13, 0.31);
+    },
+    lose: () => {
+      tone(349.23, "triangle", 0.16, 0.1, 0);
+      tone(311.13, "triangle", 0.16, 0.1, 0.14);
+      tone(261.63, "sawtooth", 0.26, 0.09, 0.28, 210);
+    }
+  };
+})();
+
 // name, amount, category index, reason
-const IT=[
-["Factory equipment rent",1500,2,"It is an indirect cost of running the factory, so it is manufacturing overhead."],
-["Factory building insurance",500,2,"Insurance on the factory is an indirect manufacturing cost."],
-["Timber used to make tables",200000,0,"Primary materials directly used in production are direct materials."],
-["Factory utilities",800,2,"Factory utilities are indirect, so they are manufacturing overhead."],
-["Office supplies",400,3,"Office costs relate to administration, so they are non-manufacturing."],
-["Assembly line wages",70000,1,"Wages of workers who convert materials into finished goods are direct labour."],
-["Depreciation on office equipment",400,3,"Office depreciation is an administrative cost: non-manufacturing."],
-["Indirect materials",10000,2,"Materials that cannot be traced to a product go into manufacturing overhead."],
-["Factory property taxes",125,2,"Factory taxes are an indirect factory cost: overhead."],
-["Factory supervisory salaries",1700,2,"Supervisors do not convert materials themselves, so this is overhead, not direct labour."],
-["Advertising",1250,3,"Advertising is a selling expense: non-manufacturing."],
-["Sales commission",80000,3,"Selling costs are non-manufacturing, however large the amount."],
-["Depreciation on factory building",900,2,"Factory depreciation is an indirect manufacturing cost: overhead."]];
-const L1=sh(IT).map(x=>({q:`Classify this cost:<br><b>${x[0]}</b><br><span class="amt">${fmt(x[1])}</span>`,o:C4,a:C4[x[2]],w:x[3]}));
-const L2=sh(IT).map(x=>{const p=x[2]<3;return{q:`Is this a product cost or a period cost?<br><b>${x[0]}</b><br><span class="amt">${fmt(x[1])}</span>`,o:["Product cost","Period cost"],a:p?"Product cost":"Period cost",w:p?"Manufacturing costs are product costs. They are reported in the Statement of Cost of Goods Manufactured.":"Non-manufacturing costs are period costs. They are reported in the Statement of Profit or Loss."}});
-const Q=(q,a,o,w)=>({q,a,o:[a,...o],w});
-const L3=[
-Q("Buying machinery that will give benefits in future years is a…","Cost (capitalised as an asset)",["Expense","Period cost","Selling expense"],"A cost buys future economic benefits. An expense gives benefits in the current period."),
-Q("Which of these is an expense?","Advertising",["Purchase of machinery","Purchase of equipment","Factory building purchase"],"Utilities, salaries and advertising are expenses: benefits are used up in the current period."),
-Q("What is true of variable cost per unit?","It is constant",["It rises with activity","It falls with activity","It is always zero"],"Total variable cost changes with activity, but the cost per unit stays the same."),
-Q("Activity rises. What happens to fixed cost per unit?","It falls",["It rises","It stays the same","It becomes variable"],"Total fixed cost does not change, so the cost per unit moves inversely to activity."),
-Q("A mixed cost is a cost that…","Has both variable and fixed elements",["Is only variable","Is only fixed","Is both product and period"],"Mixed costs contain both variable and fixed cost elements."),
-Q("Prime costs consist of…","Direct materials + direct labour",["Direct labour + overhead","Direct materials + overhead","All manufacturing costs"],"Prime costs are the main production costs: DM + DL. Direct costs are also called prime costs."),
-Q("Conversion costs consist of…","Direct labour + manufacturing overhead",["Direct materials + direct labour","Direct materials + overhead","Selling + administration"],"Conversion costs turn raw materials into finished goods: DL + overhead."),
-Q("An indirect cost is one that…","Cannot be traced to a cost object",["Can be traced to the product","Is always fixed","Is always non-manufacturing"],"Indirect costs cannot be traced to a cost object. They can be manufacturing or non-manufacturing."),
-Q("Where are period costs reported?","Statement of Profit or Loss",["Statement of Cost of Goods Manufactured","Only in the balance sheet","They are not reported"],"Period costs (selling and administration) go to the Statement of Profit or Loss."),
-Q("Where are product costs reported?","Statement of Cost of Goods Manufactured",["Statement of Profit or Loss only","Statement of cash flow only","They are not reported"],"Product costs are also known as manufacturing costs."),
-Q("Wages of assembly line workers are…","Direct labour cost",["Manufacturing overhead","A period cost","Indirect labour"],"Wages of employees directly converting materials into finished goods are direct labour."),
-Q("Selling expenses and administration expenses are also called…","Non-manufacturing costs",["Prime costs","Conversion costs","Product costs"],"They are non-manufacturing costs, also known as period costs.")];
-const R=`<div class="ref"><table><tr><td>Factory equipment rent</td><td>1,500</td></tr><tr><td>Factory building insurance</td><td>500</td></tr><tr><td>Direct materials</td><td>200,000</td></tr><tr><td>Factory utilities</td><td>800</td></tr><tr><td>Office supplies</td><td>400</td></tr><tr><td>Assembly line wages</td><td>70,000</td></tr><tr><td>Depreciation, office equipment</td><td>400</td></tr><tr><td>Indirect materials</td><td>10,000</td></tr><tr><td>Factory property taxes</td><td>125</td></tr><tr><td>Factory supervisory salaries</td><td>1,700</td></tr><tr><td>Advertising</td><td>1,250</td></tr><tr><td>Sales commission</td><td>80,000</td></tr><tr><td>Depreciation, factory building</td><td>900</td></tr></table></div>`;
-const K=(t,a,o,w)=>Q(`${t}${R}`,fmt(a),o.map(fmt),w);
-const L4=[
-K("<b>Boss round.</b> Calculate the prime costs.",270000,[200000,285525,85525],"Prime costs = direct materials 200,000 + assembly line wages 70,000 = 270,000."),
-K("Calculate the manufacturing overhead.",15525,[16525,10000,85525],"Rent 1,500 + insurance 500 + utilities 800 + indirect materials 10,000 + taxes 125 + supervisors 1,700 + depreciation 900 = 15,525."),
-K("Calculate the conversion costs.",85525,[270000,15525,285525],"Conversion = direct labour 70,000 + overhead 15,525 = 85,525."),
-K("Calculate the total manufacturing costs.",285525,[270000,367575,85525],"200,000 + 70,000 + 15,525 = 285,525."),
-K("Calculate the non-manufacturing costs.",82050,[81650,285525,80000],"Office supplies 400 + office depreciation 400 + advertising 1,250 + sales commission 80,000 = 82,050."),
-K("Which total is reported in the Statement of Profit or Loss as period costs?",82050,[285525,15525,1650],"Period costs = non-manufacturing costs = 82,050.")];
-const LV=[
-{t:"Sort the cost",d:"Classify 13 costs: materials, labour, overhead or non-manufacturing",q:L1},
-{t:"Product or period",d:"Where does each cost end up in the statements?",q:L2},
-{t:"Concept check",d:"Costs vs expenses, behaviour, prime and conversion",q:sh(L3)},
-{t:"Boss round",d:"Calculate prime, overhead, conversion and totals",q:L4}];
-const CREDIT=`<div class="credit"><strong>Credits &amp; Acknowledgement</strong>Created by: <span>MUHAMMAD ADAM MUKHRIZ BIN REDZUAN</span>Lecturer: <span>PN. NORHAFIZAH BINTI HASHIM</span></div>`;
-let S={best:[0,0,0,0]};
-try{const b=JSON.parse(localStorage.getItem("cf-best")||"null");if(b)S.best=b}catch(e){}
-function home(){
-$("#app").innerHTML=`<h1>Cost Factory</h1><p class="sub">Topic 2: Cost concept, classification and component. Beat each shift to earn up to 3 stars. You have 3 lives per shift.</p>`+LV.map((l,i)=>`<button class="lv" data-i="${i}"><span class="n">${i+1}</span><div><b>${l.t}</b><small>${l.d}</small><br><small>${"★".repeat(S.best[i])+"☆".repeat(3-S.best[i])}</small></div></button>`).join("")+CREDIT;
-document.querySelectorAll(".lv").forEach(b=>b.onclick=()=>start(+b.dataset.i))}
-function start(i){const l=LV[i];S.i=i;S.qs=i==0||i==1?sh(l.q):l.q;if(i==3)S.qs=l.q;S.n=0;S.pts=0;S.lives=3;S.streak=0;S.ok=0;show()}
-function show(){
-const q=S.qs[S.n],tot=S.qs.length;
-$("#app").innerHTML=`<div class="bar"><span>Shift ${S.i+1}: ${LV[S.i].t}</span><span>${"♥".repeat(S.lives)}${"♡".repeat(3-S.lives)}</span></div><div class="prog"><i style="width:${S.n/tot*100}%"></i></div><div class="bar"><span>${S.n+1} of ${tot}</span><span>${S.pts} pts${S.streak>1?" · streak ×"+S.streak:""}</span></div><div class="belt">${q.q}</div><div class="opts" id="o"></div><div id="f"></div>`;
-sh(q.o).forEach(t=>{const b=document.createElement("button");b.className="o";b.textContent=t;b.onclick=()=>pick(b,t,q);$("#o").appendChild(b)})}
-function pick(b,t,q){
-const good=t===q.a;
-document.querySelectorAll(".o").forEach(x=>{x.disabled=true;if(x.textContent===q.a)x.classList.add("ok")});
-if(good){S.streak++;S.ok++;S.pts+=100+Math.min(S.streak-1,5)*20}else{b.classList.add("no");S.streak=0;S.lives--}
-const last=S.n+1>=S.qs.length||S.lives<=0;
-$("#f").innerHTML=`<div class="fb ${good?"ok":"no"}"><b>${good?"Correct.":"Not quite."}</b> ${q.w}</div><button class="go" id="nx">${last?"See results":"Next item"}</button>`;
-$("#nx").onclick=()=>{if(last)end();else{S.n++;show()}};$("#nx").focus()}
-function end(){
-const tot=S.qs.length,won=S.lives>0&&S.n+1>=tot,acc=S.ok/tot;
-const st=!won?0:acc>=.9?3:acc>=.75?2:1;
-if(st>S.best[S.i]){S.best[S.i]=st;try{localStorage.setItem("cf-best",JSON.stringify(S.best))}catch(e){}}
-const all=S.best.every(x=>x>0);
-$("#app").innerHTML=`<h2>${won?"Shift complete":"Shift failed"}</h2><div class="big">${"★".repeat(st)+"☆".repeat(3-st)}</div><p class="sub">${S.ok} of ${tot} correct, ${S.pts} points.${won?"":" You ran out of lives. Review the explanations and try again."}${all?" You have cleared every shift. You are ready for Topic 3.":""}</p><button class="go" id="a">Play again</button>${S.i<3&&won?`<button class="go" id="b" style="background:var(--steel);color:#fff">Next shift</button>`:""}<button class="go" id="h" style="background:var(--card);color:var(--ink);border:2px solid var(--line)">Back to menu</button>`+CREDIT;
-$("#a").onclick=()=>{LV[2].q=sh(L3);start(S.i)};if($("#b"))$("#b").onclick=()=>start(S.i+1);$("#h").onclick=home}
+const IT = [
+  ["Factory equipment rent", 1500, 2, "It is an indirect cost of running the factory, so it is manufacturing overhead."],
+  ["Factory building insurance", 500, 2, "Insurance on the factory is an indirect manufacturing cost."],
+  ["Timber used to make tables", 200000, 0, "Primary materials directly used in production are direct materials."],
+  ["Factory utilities", 800, 2, "Factory utilities are indirect, so they are manufacturing overhead."],
+  ["Office supplies", 400, 3, "Office costs relate to administration, so they are non-manufacturing."],
+  ["Assembly line wages", 70000, 1, "Wages of workers who convert materials into finished goods are direct labour."],
+  ["Depreciation on office equipment", 400, 3, "Office depreciation is an administrative cost: non-manufacturing."],
+  ["Indirect materials", 10000, 2, "Materials that cannot be traced to a product go into manufacturing overhead."],
+  ["Factory property taxes", 125, 2, "Factory taxes are an indirect factory cost: overhead."],
+  ["Factory supervisory salaries", 1700, 2, "Supervisors do not convert materials themselves, so this is overhead, not direct labour."],
+  ["Advertising", 1250, 3, "Advertising is a selling expense: non-manufacturing."],
+  ["Sales commission", 80000, 3, "Selling costs are non-manufacturing, however large the amount."],
+  ["Depreciation on factory building", 900, 2, "Factory depreciation is an indirect manufacturing cost: overhead."]
+];
+
+const L1 = sh(IT).map(x => ({
+  q: `Classify this cost:<br><b>${x[0]}</b><br><span class="amt">${fmt(x[1])}</span>`,
+  o: C4,
+  a: C4[x[2]],
+  w: x[3]
+}));
+
+const L2 = sh(IT).map(x => {
+  const p = x[2] < 3;
+  return {
+    q: `Is this a product cost or a period cost?<br><b>${x[0]}</b><br><span class="amt">${fmt(x[1])}</span>`,
+    o: ["Product cost", "Period cost"],
+    a: p ? "Product cost" : "Period cost",
+    w: p
+      ? "Manufacturing costs are product costs. They are reported in the Statement of Cost of Goods Manufactured."
+      : "Non-manufacturing costs are period costs. They are reported in the Statement of Profit or Loss."
+  };
+});
+
+const Q = (q, a, o, w) => ({ q, a, o: [a, ...o], w });
+
+const L3 = [
+  Q("Buying machinery that will give benefits in future years is a…", "Cost (capitalised as an asset)", ["Expense", "Period cost", "Selling expense"], "A cost buys future economic benefits. An expense gives benefits in the current period."),
+  Q("Which of these is an expense?", "Advertising", ["Purchase of machinery", "Purchase of equipment", "Factory building purchase"], "Utilities, salaries and advertising are expenses: benefits are used up in the current period."),
+  Q("What is true of variable cost per unit?", "It is constant", ["It rises with activity", "It falls with activity", "It is always zero"], "Total variable cost changes with activity, but the cost per unit stays the same."),
+  Q("Activity rises. What happens to fixed cost per unit?", "It falls", ["It rises", "It stays the same", "It becomes variable"], "Total fixed cost does not change, so the cost per unit moves inversely to activity."),
+  Q("A mixed cost is a cost that…", "Has both variable and fixed elements", ["Is only variable", "Is only fixed", "Is both product and period"], "Mixed costs contain both variable and fixed cost elements."),
+  Q("Prime costs consist of…", "Direct materials + direct labour", ["Direct labour + overhead", "Direct materials + overhead", "All manufacturing costs"], "Prime costs are the main production costs: DM + DL. Direct costs are also called prime costs."),
+  Q("Conversion costs consist of…", "Direct labour + manufacturing overhead", ["Direct materials + direct labour", "Direct materials + overhead", "Selling + administration"], "Conversion costs turn raw materials into finished goods: DL + overhead."),
+  Q("An indirect cost is one that…", "Cannot be traced to a cost object", ["Can be traced to the product", "Is always fixed", "Is always non-manufacturing"], "Indirect costs cannot be traced to a cost object. They can be manufacturing or non-manufacturing."),
+  Q("Where are period costs reported?", "Statement of Profit or Loss", ["Statement of Cost of Goods Manufactured", "Only in the balance sheet", "They are not reported"], "Period costs (selling and administration) go to the Statement of Profit or Loss."),
+  Q("Where are product costs reported?", "Statement of Cost of Goods Manufactured", ["Statement of Profit or Loss only", "Statement of cash flow only", "They are not reported"], "Product costs are also known as manufacturing costs."),
+  Q("Wages of assembly line workers are…", "Direct labour cost", ["Manufacturing overhead", "A period cost", "Indirect labour"], "Wages of employees directly converting materials into finished goods are direct labour."),
+  Q("Selling expenses and administration expenses are also called…", "Non-manufacturing costs", ["Prime costs", "Conversion costs", "Product costs"], "They are non-manufacturing costs, also known as period costs.")
+];
+
+const R = `<div class="ref"><table>
+  <tr><td>Factory equipment rent</td><td>1,500</td></tr>
+  <tr><td>Factory building insurance</td><td>500</td></tr>
+  <tr><td>Direct materials</td><td>200,000</td></tr>
+  <tr><td>Factory utilities</td><td>800</td></tr>
+  <tr><td>Office supplies</td><td>400</td></tr>
+  <tr><td>Assembly line wages</td><td>70,000</td></tr>
+  <tr><td>Depreciation, office equipment</td><td>400</td></tr>
+  <tr><td>Indirect materials</td><td>10,000</td></tr>
+  <tr><td>Factory property taxes</td><td>125</td></tr>
+  <tr><td>Factory supervisory salaries</td><td>1,700</td></tr>
+  <tr><td>Advertising</td><td>1,250</td></tr>
+  <tr><td>Sales commission</td><td>80,000</td></tr>
+  <tr><td>Depreciation, factory building</td><td>900</td></tr>
+</table></div>`;
+
+const K = (t, a, o, w) => Q(`${t}${R}`, fmt(a), o.map(fmt), w);
+
+const L4 = [
+  K("<b>Boss round.</b> Calculate the prime costs.", 270000, [200000, 285525, 85525], "Prime costs = direct materials 200,000 + assembly line wages 70,000 = 270,000."),
+  K("Calculate the manufacturing overhead.", 15525, [16525, 10000, 85525], "Rent 1,500 + insurance 500 + utilities 800 + indirect materials 10,000 + taxes 125 + supervisors 1,700 + depreciation 900 = 15,525."),
+  K("Calculate the conversion costs.", 85525, [270000, 15525, 285525], "Conversion = direct labour 70,000 + overhead 15,525 = 85,525."),
+  K("Calculate the total manufacturing costs.", 285525, [270000, 367575, 85525], "200,000 + 70,000 + 15,525 = 285,525."),
+  K("Calculate the non-manufacturing costs.", 82050, [81650, 285525, 80000], "Office supplies 400 + office depreciation 400 + advertising 1,250 + sales commission 80,000 = 82,050."),
+  K("Which total is reported in the Statement of Profit or Loss as period costs?", 82050, [285525, 15525, 1650], "Period costs = non-manufacturing costs = 82,050.")
+];
+
+const LV = [
+  { t: "Sort the cost", d: "Classify 13 costs: materials, labour, overhead or non-manufacturing", q: L1 },
+  { t: "Product or period", d: "Where does each cost end up in the statements?", q: L2 },
+  { t: "Concept check", d: "Costs vs expenses, behaviour, prime and conversion", q: sh(L3) },
+  { t: "Boss round", d: "Calculate prime, overhead, conversion and totals", q: L4 }
+];
+
+const CREDIT = `<div class="credit">
+  <strong>Credits &amp; Acknowledgement</strong>
+  <div class="row">Created by: <span>MUHAMMAD ADAM MUKHRIZ BIN REDZUAN</span></div>
+  <div class="row">Lecturer: <span>PN. NORHAFIZAH BINTI HASHIM</span></div>
+</div>`;
+
+let S = { best: [0, 0, 0, 0] };
+try {
+  const b = JSON.parse(localStorage.getItem("cf-best") || "null");
+  if (b) S.best = b;
+} catch (e) {}
+
+function isDarkNow() {
+  const attr = document.documentElement.getAttribute("data-theme");
+  if (attr === "dark") return true;
+  if (attr === "light") return false;
+  return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
+
+function toggleTheme() {
+  SFX.click();
+  const next = isDarkNow() ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  const btn = $("#themeBtn");
+  if (btn) btn.textContent = next === "dark" ? "Light mode" : "Dark mode";
+}
+
+function toggleSound() {
+  const muted = SFX.toggleMute();
+  const btn = $("#soundBtn");
+  if (btn) {
+    btn.textContent = muted ? "Sound: Off" : "Sound: On";
+    btn.classList.toggle("muted", muted);
+  }
+}
+
+function topControlsHtml() {
+  const muted = SFX.isMuted();
+  return `<div class="controls">
+    <button class="icon-btn ${muted ? "muted" : ""}" id="soundBtn" type="button" onclick="toggleSound()">${muted ? "Sound: Off" : "Sound: On"}</button>
+    <button class="icon-btn" id="themeBtn" type="button" onclick="toggleTheme()">${isDarkNow() ? "Light mode" : "Dark mode"}</button>
+  </div>`;
+}
+
+function home() {
+  $("#app").innerHTML =
+    `<div class="anim-enter">
+      <div class="top-head"><div><span class="eyebrow">Cost Accounting</span><h1>Cost Factory</h1></div>${topControlsHtml()}</div>
+      <p class="sub">Topic 2: Cost concept, classification and component. Beat each shift to earn up to 3 stars. You have 3 lives per shift.</p>` +
+      LV.map((l, i) =>
+        `<button class="lv" data-i="${i}">
+          <span class="n">${i + 1}</span>
+          <div class="lv-body">
+            <b>${l.t}</b>
+            <small>${l.d}</small>
+            <div class="stars">${"★".repeat(S.best[i]) + "☆".repeat(3 - S.best[i])}</div>
+          </div>
+        </button>`
+      ).join("") +
+      CREDIT +
+    `</div>`;
+
+  document.querySelectorAll(".lv").forEach(b => b.onclick = () => {
+    SFX.start();
+    start(+b.dataset.i);
+  });
+}
+
+function start(i) {
+  const l = LV[i];
+  S.i = i;
+  S.qs = i == 0 || i == 1 ? sh(l.q) : l.q;
+  if (i == 3) S.qs = l.q;
+  S.n = 0;
+  S.pts = 0;
+  S.lives = 3;
+  S.streak = 0;
+  S.ok = 0;
+  show();
+}
+
+function show() {
+  const q = S.qs[S.n], tot = S.qs.length;
+  const keys = ["A", "B", "C", "D"];
+  $("#app").innerHTML =
+    `<div class="bar"><span>Shift ${S.i + 1}: ${LV[S.i].t}</span><span class="lives">${"♥".repeat(S.lives) + "♡".repeat(3 - S.lives)}</span></div>` +
+    `<div class="prog"><i style="width:${(S.n / tot) * 100}%"></i></div>` +
+    `<div class="bar"><span class="bar-meta">Item ${S.n + 1} of ${tot}</span><span>${S.pts} pts${S.streak > 1 ? `<span class="streak-pill">×${S.streak} streak</span>` : ""}</span></div>` +
+    `<div class="belt">${q.q}</div>` +
+    `<div class="opts" id="o"></div>` +
+    `<div id="f"></div>`;
+
+  sh(q.o).forEach((t, idx) => {
+    const b = document.createElement("button");
+    b.className = "o";
+    b.innerHTML = `<span class="key">${keys[idx] || idx + 1}</span><span>${t}</span>`;
+    b.onclick = () => pick(b, t, q);
+    $("#o").appendChild(b);
+  });
+}
+
+function pick(b, t, q) {
+  const good = t === q.a;
+  document.querySelectorAll(".o").forEach(x => {
+    x.disabled = true;
+    const label = x.querySelector("span:last-child").textContent;
+    if (label === q.a) x.classList.add("ok");
+  });
+  if (good) {
+    S.streak++;
+    S.ok++;
+    S.pts += 100 + Math.min(S.streak - 1, 5) * 20;
+    SFX.correct(S.streak);
+  } else {
+    b.classList.add("no");
+    S.streak = 0;
+    S.lives--;
+    SFX.wrong();
+  }
+  const last = S.n + 1 >= S.qs.length || S.lives <= 0;
+  $("#f").innerHTML =
+    `<div class="fb ${good ? "ok" : "no"}"><b>${good ? "Correct!" : "Not quite."}</b> ${q.w}</div>` +
+    `<button class="go" id="nx">${last ? "See results" : "Next item"}</button>`;
+  $("#nx").onclick = () => {
+    SFX.click();
+    if (last) end();
+    else { S.n++; show(); }
+  };
+  $("#nx").focus();
+}
+
+function end() {
+  const tot = S.qs.length, won = S.lives > 0 && S.n + 1 >= tot, acc = S.ok / tot;
+  const st = !won ? 0 : acc >= 0.9 ? 3 : acc >= 0.75 ? 2 : 1;
+  if (won) SFX.win();
+  else SFX.lose();
+
+  if (st > S.best[S.i]) {
+    S.best[S.i] = st;
+    try { localStorage.setItem("cf-best", JSON.stringify(S.best)); } catch (e) {}
+  }
+  const all = S.best.every(x => x > 0);
+  $("#app").innerHTML =
+    `<div class="anim-enter">
+      <div class="top-head"><h2>${won ? "Shift complete" : "Shift failed"}</h2>${topControlsHtml()}</div>
+      <div class="result-card">
+        <div class="big">${"★".repeat(st) + "☆".repeat(3 - st)}</div>
+        <div class="stats-row">
+          <div class="stat-box"><span>Accuracy</span><strong>${S.ok}/${tot}</strong></div>
+          <div class="stat-box"><span>Score</span><strong>${S.pts}</strong></div>
+        </div>
+        <p class="sub" style="margin:12px 0 0">${won ? "" : "You ran out of lives. Review the explanations and try again."}${all ? "You have cleared every shift. You are ready for Topic 3." : ""}</p>
+      </div>
+      <button class="go" id="a">Play again</button>` +
+      (S.i < 3 && won ? `<button class="go" id="b" style="background:var(--steel);color:#fff">Next shift</button>` : "") +
+      `<button class="go" id="h" style="background:var(--card);color:var(--ink);border:1.5px solid var(--line)">Back to menu</button>` +
+      CREDIT +
+    `</div>`;
+
+  $("#a").onclick = () => { SFX.start(); LV[2].q = sh(L3); start(S.i); };
+  if ($("#b")) $("#b").onclick = () => { SFX.start(); start(S.i + 1); };
+  $("#h").onclick = () => { SFX.click(); home(); };
+}
+
 home();
-</script></body></html>
+</script>
+</body>
+</html>
